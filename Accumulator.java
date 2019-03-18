@@ -16,6 +16,7 @@ public class Accumulator {
       ) {
         String result = "";
 
+
         for( int el = 0; el < list.size(); el++)
             result += // dummy for incremental development
                       list.get( el) + " ";
@@ -25,7 +26,7 @@ public class Accumulator {
                elements in list when some elements of the list might
                omit support for a particular operation.
 
-               This protection is implemented by the ___________ (compiler? JVM?)
+               This protection is implemented by the compiler (compiler? JVM?)
                The following code violates the restriction:
               */
             // [code that violates the restriction]
@@ -40,10 +41,10 @@ public class Accumulator {
             /* 4.  Workaround 0
                A programmer should expect there to be a way to
                work around the stumbling block, because
-               the ___________ (compiler? JVM?)
+               the compiler (compiler? JVM?)
                knows the type of an element.
 
-               Java's ___________ operator identifies the type
+               Java's instanceof operator identifies the type
                of an element to the ___________ (compiler? JVM?).
              */
 
@@ -65,7 +66,7 @@ public class Accumulator {
 
 
             /* 6. Workaround 1
-               Programmers use Java's _____________ operator
+               Programmers use Java's instanceof operator
                to tell the ___________ (compiler? JVM?)
                that code uses a subclass's method on an object,
                even though the reference to the object is stored
