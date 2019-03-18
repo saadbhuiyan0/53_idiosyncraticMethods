@@ -17,7 +17,7 @@ public class Accumulator {
         String result = "";
 
 
-        for( int el = 0; el < list.size(); el++)
+        for( int el = 0; el < list.size(); el++) {
             result += // dummy for incremental development
                       list.get( el) + " ";
 
@@ -29,12 +29,26 @@ public class Accumulator {
                This protection is implemented by the compiler (compiler? JVM?)
                The following code violates the restriction:
               */
-            // [code that violates the restriction]
+            // if ( list.get(el).startsWith( prefix)) {
+            //   result += list.get( el);
+            // }
 
             /*
-             predicted error message:
+             predicted error message: 
+                method cannot be applied to type
 
-             actual error message:
+             actual error message: 
+                Accumulator.java:32: error: cannot find symbol
+                        if ( list.get(el).startsWith( prefix)) {
+                          ^
+                    symbol:   variable el
+                    location: class Accumulator
+                Accumulator.java:33: error: cannot find symbol
+                        result += list.get( el);
+                                  ^
+                    symbol:   variable el
+                    location: class Accumulator
+                2 errors
              */
 
 
@@ -45,29 +59,50 @@ public class Accumulator {
                knows the type of an element.
 
                Java's instanceof operator identifies the type
-               of an element to the ___________ (compiler? JVM?).
+               of an element to the compiler (compiler? JVM?).
              */
 
 
             /* 5.  Stumbling block 1
                However, use of the operator alone is insufficient,
-               because the ___________ (compiler? JVM?)
+               because the compiler (compiler? JVM?)
                objects to the following code that adds use of
                the operator to the code from Stumbling block 0:
              */
 
-            // [code that illustrates the use of the operator]
+            // if ( list.get( el) instanceof String) {
+            //   if (list.get( el).startsWith( prefix)) {
+            //       result += list.get( el);
+            //   }
+            // }
 
             /*
              predicted error message:
+                method cannot be applied to type
 
              actual error message:
+                Accumulator.java:72: error: cannot find symbol
+                        if ( list.get( el) instanceof String) {
+                           ^
+                    symbol:   variable el
+                    location: class Accumulator
+                Accumulator.java:73: error: cannot find symbol
+                        if (list.get( el).startsWith( prefix)) {
+                            ^
+                    symbol:   variable el
+                    location: class Accumulator
+                Accumulator.java:74: error: cannot find symbol
+                        result += list.get( el);
+                                      ^
+                    symbol:   variable el
+                    location: class Accumulator
+                3 errors
              */
 
 
             /* 6. Workaround 1
                Programmers use Java's instanceof operator
-               to tell the ___________ (compiler? JVM?)
+               to tell the JVM (compiler? JVM?)
                that code uses a subclass's method on an object,
                even though the reference to the object is stored
                in a super-class variable.
@@ -76,17 +111,22 @@ public class Accumulator {
 
             /* 7. Stumbling block 2
                However, use of this operator alone is insufficient,
-               because the ___________ (compiler? JVM?)
+               because the JVM (compiler? JVM?)
                objects to the following code that adds use of
                the operator to the code from Stumbling block 0:
              */
 
-            // [code that illustrates the use of the operator]
+            // if ( ((String)( list.get( el))).startsWith( prefix)) {
+            //     result += list.get( el);
+            // }
 
             /*
-             predicted error message:
+             predicted error message: cannot cast type int/double to String
 
              actual error message:
+                Exception in thread "main" java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String
+                      at Accumulator.catElementsStartingWith(Accumulator.java:119)
+                      at UserOfList.main(UserOfList.java:32)
              */
 
 
@@ -96,7 +136,12 @@ public class Accumulator {
                elements in the list that support the method.
              */
 
-            // [working code here, finally]
+            if ( list.get( el) instanceof String) {
+              String s = (String)( list.get( el));
+              if ( s.startsWith( prefix) )
+                  result += s + ", ";
+            }
+        }
 
         return result;
     }
@@ -106,8 +151,18 @@ public class Accumulator {
       @return a list of each of the Double elements
       from the \list whose value is "finite".
      */
-    // public static List_inArraySlots finites(
-        // List_inArraySlots list
-      // ) {
-    // }
+    public static List_inArraySlots finites(
+        List_inArraySlots list
+      ) {
+        
+        List_inArraySlots elements = new List_inArraySlots();
+
+        for ( int el = 0; el < list.size(); el++) {
+          if ( list.get( el) instanceof Double && !( (Double)list.get( el)).isInfinite()) {
+                elements.add( list.get(el) );
+          }
+        } 
+
+        return elements;
+    }
 }
